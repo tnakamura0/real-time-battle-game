@@ -1,7 +1,7 @@
 Rails.application.routes.draw do
   devise_for :users, controllers: { omniauth_callbacks: "users/omniauth_callbacks" }
   devise_scope :user do
-    post 'auth/google_callback', to: 'users/omniauth_callbacks#google_oauth2', as: :google_callback
+    post "auth/google_callback", to: "users/omniauth_callbacks#google_oauth2", as: :google_callback
   end
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 

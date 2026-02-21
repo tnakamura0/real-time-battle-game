@@ -36,7 +36,7 @@ class User < ApplicationRecord
           logger.error "Failed to attach image from Google: #{e.message}"
         end
       end
-      
+
       user.save
     end
     user
