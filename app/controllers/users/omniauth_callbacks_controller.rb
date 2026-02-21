@@ -11,12 +11,12 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
 
     # OmniAuthが作るデータ構造（AuthHash）を自作して擬似的に再現する
     auth_hash = OmniAuth::AuthHash.new({
-      provider: 'google_oauth2',
-      uid: payload['sub'],
+      provider: "google_oauth2",
+      uid: payload["sub"],
       info: {
-        email: payload['email'],
-        name: payload['name'],
-        image: payload['picture']
+        email: payload["email"],
+        name: payload["name"],
+        image: payload["picture"]
       }
     })
     # You need to implement the method below in your model (e.g. app/models/user.rb)

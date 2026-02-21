@@ -18,7 +18,7 @@ default: &default
   # For details on connection pooling, see Rails configuration guide
   # https://guides.rubyonrails.org/configuring.html#database-pooling
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
-  host: db
+  host: <%= ENV.fetch("DB_HOST") { "db" } %>
   username: postgres
   password: password
 
@@ -30,15 +30,15 @@ development:
     database: app_development
   cache:   # Solid Cache用
     <<: *default
-    database: app_development
+    database: app_development_cache
     migrations_paths: db/cache_migrate
   queue:   # Solid Queue用
     <<: *default
-    database: app_development
+    database: app_development_queue
     migrations_paths: db/queue_migrate
   cable:   # Solid Cable用
     <<: *default
-    database: app_development
+    database: app_development_cable
     migrations_paths: db/cable_migrate
 
   # The specified database role being used to connect to PostgreSQL.
@@ -77,15 +77,15 @@ test:
     database: app_test
   cache:
     <<: *default
-    database: app_test
+    database: app_test_cache
     migrations_paths: db/cache_migrate
   queue:
     <<: *default
-    database: app_test
+    database: app_test_queue
     migrations_paths: db/queue_migrate
   cable:
     <<: *default
-    database: app_test
+    database: app_test_cable
     migrations_paths: db/cable_migrate
 
 # As with config/credentials.yml, you never want to store sensitive information,
