@@ -1,0 +1,21 @@
+# パッチバージョンアップデートだけを自動でマージする
+# ブランチプロテクションルールを特に設定していない場合の設定を記載
+# マージ前のステータスチェックを必須にする場合は、
+# gh pr mergeコマンドへの--autoフラグの追加とリポジトリの設定の変更が必要
+name: Auto patch merge
+on: pull_request
+jobs:
+  merge:
+    if: ${{ github.actor == 'dependabot[bot]' }}
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    steps:
+      - uses: actions/checkout@v4
+      - id: meta
+        uses: dependabot/fetch-metadata@v2
+      - if: ${{ steps.meta.outputs.update-type == 'version-update:semver-patch' }}
+        run: gh pr merge "${GITHUB_HEAD_REF}" --merge

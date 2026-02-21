@@ -1,0 +1,42 @@
+<%# 
+  引数の定義:
+  - type: :responsive (デフォルト：スマホは上、PCは下), :none (表示なし) 
+  - button_text: ボタン内のテキスト
+%>
+<%
+  type = local_assigns.fetch(:type, :responsive)
+  button_text = local_assigns.fetch(:text, "signin_with")
+
+  # セパレーター部分を定義（共通パーツ）
+  # 呼び出し側で個別にクラスを追加できるよう、引数を受け取れるようにします
+  def render_separator(css_class)
+    tag.div class: "relative py-4 #{css_class}" do
+      concat tag.div(tag.div("", class: "w-full border-t border-label-muted"), class: "absolute inset-0 flex items-center", "aria-hidden": "true")
+      concat tag.div(tag.span("または", class: "bg-surface px-6 text-label"), class: "relative flex justify-center text-sm font-medium leading-6")
+    end
+  end
+%>
+
+<div class="flex flex-col">
+  <% if type == :responsive %>
+    <%# --- スマホ・タブレット用：ボタンの上に表示（PC [md以上] では隠す） --- %>
+    <%= render_separator("md:hidden") %>
+  <% end %>
+
+  <%# 公式ボタンの設定（IDは1つだけに保つ） %>
+  <div id="custom_g_id_onload"
+    data-g-client_id="<%= Rails.application.credentials.dig(:google, :client_id) %>"
+    data-g-login_uri="<%= google_callback_url %>">
+  </div>
+
+  <%# Google公式ボタン（常に表示） %>
+  <div class="js_google_button" 
+    data-text="<%= button_text %>" 
+    style="height: 40px;">
+  </div>
+
+  <% if type == :responsive %>
+    <%# --- PC用：ボタンの下に表示（スマホ・タブレット [md未満] では隠す） --- %>
+    <%= render_separator("hidden md:block") %>
+  <% end %>
+</div>

@@ -1,0 +1,8 @@
+<div class="flex gap-4">
+  <p>ログイン後</p>
+  <div class="">
+    <%= link_to destroy_user_session_path, data: { turbo_method: :delete } do %>
+      <%= t("devise.sessions.sign_out") %>
+    <% end %>
+  </div>
+</div>

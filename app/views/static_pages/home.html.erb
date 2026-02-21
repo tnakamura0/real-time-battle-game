@@ -1,0 +1,13 @@
+<div>
+  <h1 class="font-bold text-4xl">StaticPages#home</h1>
+  <p>Find me in app/views/static_pages/home.html.erb</p>
+  <div>
+    <% if user_signed_in? %>
+      <p>ユーザー名：<%= current_user.name %></p>
+      <p>メールアドレス：<%= current_user.email %></p>
+      <% if current_user.image.attached? %>
+        <%= image_tag current_user.image.variant(resize_to_fill: [80, 80]), class: "rounded-full w-10 h-10" %>
+      <% end %>
+    <% end %>
+  </div>
+</div>

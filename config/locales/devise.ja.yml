@@ -1,0 +1,21 @@
+ja:
+  devise:
+    shared:
+      minimum_password: "※%{length}文字以上で入力してください"
+      links:
+        sign_in: アカウントをお持ちの方はこちら
+        sign_up: アカウントをお持ちでない方はこちら
+        forgot_password: パスワードを忘れた方はこちら
+    sessions:
+      sign_out: ログアウト
+      new:
+        title: LOGIN
+        sign_in: ログインする
+    registrations:
+      new:
+        title: SIGNUP
+        sign_up: 新規登録する
+    passwords:
+      new:
+        title: パスワードを忘れましたか？
+        send_email: 再設定用メールを送信する

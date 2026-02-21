@@ -1,0 +1,46 @@
+<div class="form-container">
+  <h1 class="page-title"><%= t(".title") %></h1>
+
+  <div class="flex flex-col">
+    <div class="order-2 md:order-1">
+      <%= render 'devise/shared/google_auth_button' %>
+    </div>
+    <div class="order-1 md:order-2">
+      <%= form_with model: resource, url: session_path(resource_name), class: "space-y-4" do |f| %>
+        <div class="form-inner">
+          <%= f.label :email, class: "form-label" do %>
+            <span class="w-1 h-3 bg-primary"></span>
+            <%= User.human_attribute_name(:email) %>
+          <% end %>
+          <%= f.email_field :email,
+            autofocus: true,
+            autocomplete: "email",
+            class: "form-input",
+            placeholder: "ENTER EMAIL..."
+          %>
+        </div>
+
+        <div class="form-inner">
+          <%= f.label :password, class: "form-label" do %>
+            <span class="w-1 h-3 bg-primary"></span>
+            <%= User.human_attribute_name(:password) %>
+          <% end %>
+          <%= f.password_field :password,
+            autocomplete: "current-password",
+            class: "form-input",
+            placeholder: "ENTER PASSWORD..."
+          %>
+        </div>
+
+        <% if devise_mapping.rememberable? %>
+          <div class="form-inner">
+            <%= f.check_box :remember_me %>
+            <%= f.label :remember_me, class: "text-label" %>
+          </div>
+        <% end %>
+        <%= f.submit t(".sign_in"), class: "form-submit-button" %>
+      <% end %>
+    </div>
+  </div>
+  <%= render "devise/shared/links" %>
+</div>

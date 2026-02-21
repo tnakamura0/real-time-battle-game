@@ -1,0 +1,52 @@
+@import "tailwindcss";
+
+@theme {
+  /* ブランドカラー */
+  --color-primary: oklch(0.9 0.21 95);
+  --color-primary-hover: oklch(0.75 0.18 95);
+  --color-base: oklch(0.18 0.02 260);
+  --color-surface: oklch(0.25 0.03 260); /* カードやパネル用、ベースカラーを少し明るくした */
+  --color-surface-input: oklch(0.32 0.04 260); /* フォームの入力欄の背景用、フォームの背景を少し明るくした */
+  --color-accent: oklch(0.65 0.25 340);
+  
+  --color-success: oklch(0.8 0.25 150); /* 勝利やレベルアップ用、黄色と並んでも区別がつく鮮やかなエメラルドグリーン */
+  --color-error: oklch(0.65 0.28 25); /* 敗北や通信エラー用、メインの黄色(H:95)やアクセントのピンク(H:340)と被らない、純粋な赤 */
+  --color-warning: oklch(0.75 0.2 60); /* ランク降格の危機や注意用、黄色より少しオレンジに寄せることで区別する */
+  --color-info: oklch(0.8 0.15 200); /* 黄色の補色に近いサイバーなシアン（水色） */
+
+  --color-label: oklch(0.8 0.01 260); /* お知らせやステータス用、ベースカラーを薄めた色 */
+  --color-label-muted: oklch(0.6 0.02 260); /* 補足説明用、ラベルの色をさらに控えめにした */
+  --color-link: oklch(0.7 0.25 250);
+}
+
+@layer components {
+  /* フォーム関係 */
+  /* Google公式ボタンの最大幅である400pxになるようにコンテンツ幅を調整 */
+  .form-container {
+    @apply bg-surface rounded-xl md:w-124 p-8 md:p-12 md:max-w-2xl md:mx-auto;
+  }
+  .form-inner {
+  }
+  .form-label {
+    @apply flex items-center gap-2 text-label font-bold tracking-widest mb-2;
+  }
+  .form-input {
+    @apply w-full bg-surface-input border-2 border-transparent focus:border-primary focus:ring-0 text-white p-2.5 transition-all outline-none;
+  }
+  .form-submit-button {
+    @apply mt-4 w-full h-12 flex items-center justify-center
+          border-2 border-primary rounded-4xl 
+          bg-transparent text-primary font-bold tracking-widest
+          cursor-pointer transition-all appearance-none outline-none;
+  }
+  .form-submit-button:hover {
+    @apply bg-primary text-base;
+  }
+  .form-annotation {
+    @apply mt-1 text-xs text-label-muted;
+  }
+
+  .page-title {
+    @apply text-3xl md:text-4xl text-center text-primary font-bold tracking-widest mb-4;
+  }
+}
