@@ -3,6 +3,7 @@ import consumer from "channels/consumer"
 consumer.subscriptions.create("RoomChannel", {
   connected() {
     // Called when the subscription is ready for use on the server
+    console.log("接続しました！");
   },
 
   disconnected() {
