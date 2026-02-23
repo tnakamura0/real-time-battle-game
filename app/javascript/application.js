@@ -1,5 +1,6 @@
 import "@hotwired/turbo-rails"
 import "controllers"
+import "channels"
 
 const renderGoogleButton = () => {
   const config = document.getElementById("custom_g_id_onload");
