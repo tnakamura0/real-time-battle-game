@@ -6,7 +6,7 @@ class CreateRooms < ActiveRecord::Migration[8.1]
       t.integer :initial_hp
       t.integer :guard_cooldown_turns
       t.integer :status
-      t.references :owner, null: false, foreign_key: true
+      t.references :owner, null: false, foreign_key: { to_table: :users }
 
       t.timestamps
     end
