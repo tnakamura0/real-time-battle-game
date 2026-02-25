@@ -18,7 +18,7 @@ class Room < ApplicationRecord
     return if passcode.present?
 
     loop do
-      self.passcode = SecureRandom.random_number(10**4).to_s.rjust(4, '0')
+      self.passcode = SecureRandom.random_number(10**4).to_s.rjust(4, "0")
       break unless Room.exists?(passcode: self.passcode)
     end
   end
