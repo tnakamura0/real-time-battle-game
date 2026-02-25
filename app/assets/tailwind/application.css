@@ -3,7 +3,7 @@
 @theme {
   /* ブランドカラー */
   --color-primary: oklch(0.9 0.21 95);
-  --color-primary-hover: oklch(0.75 0.18 95);
+  --color-primary-hover: oklch(0.6 0.15 95);
   --color-base: oklch(0.18 0.02 260);
   --color-surface: oklch(0.25 0.03 260); /* カードやパネル用、ベースカラーを少し明るくした */
   --color-surface-input: oklch(0.32 0.04 260); /* フォームの入力欄の背景用、フォームの背景を少し明るくした */
@@ -17,6 +17,19 @@
   --color-label: oklch(0.8 0.01 260); /* お知らせやステータス用、ベースカラーを薄めた色 */
   --color-label-muted: oklch(0.6 0.02 260); /* 補足説明用、ラベルの色をさらに控えめにした */
   --color-link: oklch(0.7 0.25 250);
+
+  /* テキストカラー */
+  /* 1. プライマリ：見出しや重要な数値（白に近いが、わずかに青みがある） */
+  --color-game-text-primary: oklch(0.95 0.01 260);
+
+  /* 2. セカンダリ：通常の説明文やラベル（少し落ち着かせたグレーブルー） */
+  --color-game-text-secondary: oklch(0.75 0.02 260);
+
+  /* 3. ミューテッド：補足情報やプレースホルダー（さらに暗い色） */
+  --color-game-text-muted: oklch(0.55 0.02 260);
+
+  /* 4. インバース（反転）：黄色のボタンやバッジの上に乗せる文字 */
+  --color-game-text-inverse: oklch(0.18 0.02 260); /* 背景色と同じ濃紺でOK */
 }
 
 @layer components {
@@ -47,6 +60,9 @@
   }
 
   .page-title {
-    @apply text-3xl md:text-4xl text-center text-primary font-bold tracking-widest mb-4;
+    @apply text-3xl md:text-4xl text-center text-game-text-primary font-bold tracking-widest mb-4;
+  }
+  .page-title-description {
+    @apply md:text-xl text-center text-game-text-secondary mb-4
   }
 }

@@ -18,3 +18,10 @@ ja:
       not_updated: "%{item}を更新出来ませんでした"
       deleted: "%{item}を削除しました"
       require_login: ログインしてください
+  rooms:
+    new:
+      title: ルーム設定
+      description: 対戦ルールを設定してください。
+      initial_hp: 初期HP
+      guard_cooldown_turns: ガードのクールダウンターン
+      create_room: 部屋を作成
