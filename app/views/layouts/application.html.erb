@@ -28,6 +28,7 @@
     <% else %>
       <%= render 'shared/before_login_header' %>
     <% end %>
+    <%= render 'shared/flash_message' %>
     <main class="container mx-auto px-5">
       <%= yield %>
     </main>

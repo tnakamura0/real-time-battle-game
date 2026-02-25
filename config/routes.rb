@@ -17,5 +17,5 @@ Rails.application.routes.draw do
   # root "posts#index"
   root "static_pages#home"
 
-  resource :room, only: %i[new show]
+  resources :rooms, only: %i[new create show], params: :token
 end
