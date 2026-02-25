@@ -4,6 +4,10 @@
 # to make the web console appear.
 development:
   adapter: solid_cable
+  connects_to:
+    database:
+      writing: cable
+      reading: cable
 
 test:
   adapter: test
