@@ -47,12 +47,12 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_24_013424) do
     t.integer "guard_cooldown_turns", default: 1, null: false
     t.integer "initial_hp", default: 3, null: false
     t.bigint "owner_id", null: false
-    t.string "passcord", null: false
+    t.string "passcode", null: false
     t.integer "status", default: 0, null: false
     t.string "token", null: false
     t.datetime "updated_at", null: false
     t.index ["owner_id"], name: "index_rooms_on_owner_id"
-    t.index ["passcord"], name: "index_rooms_on_passcord"
+    t.index ["passcode"], name: "index_rooms_on_passcode"
     t.index ["token"], name: "index_rooms_on_token"
   end
 
