@@ -1,0 +1,27 @@
+<%# 
+  受け取る変数（locals）:
+  - f         : form_with のブロック変数
+  - attribute : カラム名（例: :initial_hp）
+  - title     : h2タグに表示するテキスト
+  - options   : 選択肢の配列
+%>
+
+<div class="mb-8">
+  <h2 class="text-xl md:text-2xl text-center text-game-text-primary font-bold tracking-widest mb-4">
+    <%= title %>
+  </h2>
+
+  <%= f.collection_radio_buttons attribute, options, ->(o){ o[:value] }, ->(o){ o[:title] } do |b| %>
+    <div>
+      <%= b.radio_button class: 'peer hidden' %>
+      <%= b.label class: 'flex flex-col text-center mt-4 p-4 bg-base border-2 border-surface-input rounded cursor-pointer transition-colors hover:bg-surface peer-checked:border-primary peer-checked:bg-surface' do %>
+        <span class="text-game-text-primary font-bold text-lg">
+          <%= b.object[:title] %>
+        </span>
+        <span class="text-game-text-secondary text-sm mt-1 opacity-80">
+          <%= b.object[:desc] %>
+        </span>
+      <% end %>
+    </div>
+  <% end %>
+</div>

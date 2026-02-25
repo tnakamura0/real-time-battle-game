@@ -1,0 +1,35 @@
+<h1 class="page-title"><%= t(".title") %></h1>
+<p class="page-title-description"><%= t(".description") %></p>
+<div class="form-container">
+  <%= form_with model: @room do |f| %>
+
+    <% 
+      initial_hp_options = [
+        { value: 2, title: '2', desc: 'SHORT MATCH' },
+        { value: 3, title: '3', desc: 'DEFAULT' }
+      ] 
+      guard_cooldown_turns_options = [
+        { value: 1, title: '1', desc: 'DEFAULT' },
+        { value: 2, title: '2', desc: 'SHORT MATCH' }
+      ]
+    %>
+
+    <%= render 'radio_button_group',
+          f: f,
+          attribute: :initial_hp,
+          title: t(".initial_hp"),
+          options: initial_hp_options
+    %>
+
+    <div class="mb-8 border-b border-game-text-muted"></div>
+
+    <%= render 'radio_button_group',
+          f: f,
+          attribute: :guard_cooldown_turns,
+          title: t(".guard_cooldown_turns"),
+          options: guard_cooldown_turns_options
+    %>
+
+    <%= f.submit t(".create_room"), class: "form-submit-button" %>
+  <% end %>
+</div>
