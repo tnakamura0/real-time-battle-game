@@ -17,6 +17,15 @@ class RoomsController < ApplicationController
     @room = Room.find_by!(token: params[:id])
   end
 
+  def join
+    @room = Room.find_by(passcode: params[:passcode])
+    if @room
+      redirect_to room_path(@room.token), success: t("defaults.flash_message.entered", item: Room.model_name.human)
+    else
+      redirect_to root_path, alert: t("defaults.flash_message.not_entered_with_passcode")
+    end
+  end
+
   private
 
   def room_params
