@@ -16,6 +16,8 @@ ja:
       not_created: "%{item}を作成出来ませんでした"
       updated: "%{item}を更新しました"
       not_updated: "%{item}を更新出来ませんでした"
+      entered: "%{item}に入室しました"
+      not_entered_with_passcode: "パスコードが間違っているか、部屋がありません"
       deleted: "%{item}を削除しました"
       require_login: ログインしてください
   rooms:
@@ -25,3 +27,7 @@ ja:
       initial_hp: 初期HP
       guard_cooldown_turns: ガードのクールダウンターン
       create_room: 部屋を作成
+    passcode_input_form:
+      title: パスコードを入力
+      description: 共有された4桁の数字を入力してください。
+      submit: 参加する

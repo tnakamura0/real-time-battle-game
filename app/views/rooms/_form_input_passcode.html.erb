@@ -1,0 +1,22 @@
+<div class="form-container">
+  <h2 class="page-title"><%= t("rooms.passcode_input_form.title") %></h2>
+  <p class="page-title-description"><%= t("rooms.passcode_input_form.description") %></p>
+  <%= form_with url: join_rooms_path do |f| %>
+    <div data-controller="passcode" class="flex justify-center gap-4 md:gap-8">
+      <%# 実際にバックエンドに送信される隠しフィールド %>
+      <%= f.hidden_field :passcode, data: { passcode_target: "hidden" } %>
+
+      <%# 1文字ずつの入力フィールド %>
+      <% 4.times do %>
+        <input type="text"
+               maxlength="1"
+               inputmode="numeric"
+               pattern="\d*"
+               data-passcode-target="input"
+               data-action="input->passcode#handleInput keydown->passcode#handleKeydown"
+               class="w-16 h-16 text-center text-3xl font-bold text-game-text-primary bg-base border-2 border-surface-input rounded-xl shadow-sm focus:border-primary focus:ring-2 focus:ring-primary focus:outline-none transition-all duration-200">
+      <% end %>
+    </div>
+    <%= f.submit t("rooms.passcode_input_form.submit"), class: "form-submit-button hover:form-submit-button-hover" %>
+  <% end %>
+</div>
