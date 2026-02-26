@@ -8,6 +8,7 @@
       <% if current_user.image.attached? %>
         <%= image_tag current_user.image.variant(resize_to_fill: [80, 80]), class: "rounded-full w-10 h-10" %>
       <% end %>
+      <%= render 'rooms/form_input_passcode' %>
     <% end %>
   </div>
 </div>
