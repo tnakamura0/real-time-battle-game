@@ -14,7 +14,7 @@ class RoomsController < ApplicationController
   end
 
   def show
-    @room = Room.find_by!(token: params[:id])
+    @room = Room.find_by!(token: params[:token])
   end
 
   def join
