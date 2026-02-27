@@ -3,6 +3,8 @@ require "open-uri" # URLを開くために必要
 class User < ApplicationRecord
   has_one_attached :image
   has_one :owned_room, class_name: "Room", foreign_key: "owner_id", dependent: :destroy
+  has_many :player_1_matches, class_name: "Match", foreign_key: "player_1_id", dependent: :nullify
+  has_many :player_2_matches, class_name: "Match", foreign_key: "player_2_id", dependent: :nullify
 
   # Deviseの設定の前にnameカラムのバリデーションを書くとバリデーションエラーの際に上に表示される
   validates :name, presence: true, length: { maximum: 20 }
