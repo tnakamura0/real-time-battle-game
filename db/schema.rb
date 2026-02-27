@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_02_24_013424) do
+ActiveRecord::Schema[8.1].define(version: 2026_02_27_074118) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -40,6 +40,24 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_24_013424) do
     t.bigint "blob_id", null: false
     t.string "variation_digest", null: false
     t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
+  end
+
+  create_table "matches", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.integer "p1_energy", default: 0, null: false
+    t.integer "p1_hp", null: false
+    t.integer "p1_last_guarded_turn"
+    t.integer "p2_energy", default: 0, null: false
+    t.integer "p2_hp", null: false
+    t.integer "p2_last_guarded_turn"
+    t.bigint "player_1_id", null: false
+    t.bigint "player_2_id"
+    t.bigint "room_id"
+    t.integer "status", null: false
+    t.datetime "updated_at", null: false
+    t.index ["player_1_id"], name: "index_matches_on_player_1_id"
+    t.index ["player_2_id"], name: "index_matches_on_player_2_id"
+    t.index ["room_id"], name: "index_matches_on_room_id"
   end
 
   create_table "rooms", force: :cascade do |t|
@@ -74,5 +92,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_24_013424) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "matches", "rooms", on_delete: :nullify
+  add_foreign_key "matches", "users", column: "player_1_id", on_delete: :nullify
+  add_foreign_key "matches", "users", column: "player_2_id", on_delete: :nullify
   add_foreign_key "rooms", "users", column: "owner_id"
 end
