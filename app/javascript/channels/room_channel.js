@@ -1,16 +1,31 @@
-import consumer from "channels/consumer"
+import consumer from "./consumer"
 
-consumer.subscriptions.create("RoomChannel", {
-  connected() {
-    // Called when the subscription is ready for use on the server
-    console.log("接続しました！");
-  },
+document.addEventListener("turbo:load", () => {
+  const roomContainer = document.getElementById("room-container");
 
-  disconnected() {
-    // Called when the subscription has been terminated by the server
-  },
+  if (roomContainer) {
+    // HTMLのdata-token属性の値を取得
+    const roomToken = roomContainer.dataset.token;
 
-  received(data) {
-    // Called when there's incoming data on the websocket for this channel
+    // 既に同じチャンネルを購読している場合は、重複を避けるために切断する
+    const existingSubscription = consumer.subscriptions.subscriptions.find(
+      (sub) => sub.identifier === JSON.stringify({ channel: "RoomChannel", token: roomToken })
+    );
+    if (!existingSubscription) {
+      consumer.subscriptions.create({ channel: "RoomChannel", token: roomToken }, {
+        connected() {
+          console.log(`部屋（${roomToken}）に接続しました！`);
+        },
+
+        disconnected() {
+          console.log("切断されました");
+        },
+
+        received(data) {
+          // サーバーからデータを受け取った時の処理
+          console.log("データを受信:", data);
+        }
+      });
+    }
   }
 });
