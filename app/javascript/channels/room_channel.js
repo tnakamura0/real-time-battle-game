@@ -22,8 +22,9 @@ document.addEventListener("turbo:load", () => {
         },
 
         received(data) {
-          // サーバーからデータを受け取った時の処理
-          console.log("データを受信:", data);
+          if (data.type == "match_started") {
+            console.log(`対戦開始！（Match ID: ${data.match_id}）`)
+          }
         }
       });
     }
