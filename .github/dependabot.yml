@@ -7,7 +7,7 @@ updates:
   open-pull-requests-limit: 10
   ignore:
       - dependency-name: "rails"
-        versions: [">= 7.3"]
+        versions: [">= 8.2"]
 - package-ecosystem: github-actions
   directory: "/"
   schedule:
