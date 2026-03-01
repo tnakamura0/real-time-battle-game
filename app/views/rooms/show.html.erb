@@ -1,15 +1,23 @@
 <div data-controller="room" data-room-token-value="<%= @room.token %>">
-  <h1 class="font-bold text-4xl">Rooms#show</h1>
-  <p>
-    初期HP：<%= @room.initial_hp %>
-  </p>
-  <p>
-    ガードのクールダウン：<%= @room.guard_cooldown_turns %>ターン
-  </p>
-  <p>
-    パスコード：<%= @room.passcode %>
-  </p>
-  <p>
-    トークン：<%= @room.token %>
-  </p>
+
+  <%# 待機画面 %>
+  <div data-room-target="waiting">
+    <%= render 'waiting_room' %>
+  </div>
+
+  <%# 対戦開始演出画面 %>
+  <div data-room-target="matchStartEffect" class="hidden">
+    <%= render 'match_start_effect' %>
+  </div>
+
+  <%# 対戦画面 %>
+  <div data-room-target="battleBoard" class="hidden">
+    <%= render 'battle_board' %>
+  </div>
+
+  <%# 手の選択結果演出画面 %>
+  <div data-room-target="turnResultEffect" class="hidden">
+    <%= render 'turn_result_effect' %>
+  </div>
+
 </div>
