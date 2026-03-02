@@ -20,7 +20,8 @@ class RoomChannel < ApplicationCable::Channel
       @match.update!(player_2: current_user)
       stream_for @room
 
-      # 2人揃い次第、対戦開始の合図をフロントエンドに送信
+      # 2人揃い次第、最初のターンを作成して対戦開始の合図をフロントエンドに送信
+      @match.turns.create!
       RoomChannel.broadcast_to(@room, { type: "match_started", match_id: @match.id })
 
     elsif current_user.id == @match.player_2_id
