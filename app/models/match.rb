@@ -4,4 +4,5 @@ class Match < ApplicationRecord
   belongs_to :room, optional: true
   belongs_to :player_1, class_name: "User", optional: true
   belongs_to :player_2, class_name: "User", optional: true
+  has_many :turns
 end
