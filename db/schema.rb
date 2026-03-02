@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_02_27_074118) do
+ActiveRecord::Schema[8.1].define(version: 2026_03_02_040207) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -74,6 +74,21 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_27_074118) do
     t.index ["token"], name: "index_rooms_on_token"
   end
 
+  create_table "turns", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.bigint "match_id", null: false
+    t.integer "p1_action"
+    t.integer "p1_energy_after"
+    t.integer "p1_hp_after"
+    t.integer "p2_action"
+    t.integer "p2_energy_after"
+    t.integer "p2_hp_after"
+    t.integer "status", default: 0, null: false
+    t.integer "turn_number", default: 1, null: false
+    t.datetime "updated_at", null: false
+    t.index ["match_id"], name: "index_turns_on_match_id"
+  end
+
   create_table "users", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.string "email", default: "", null: false
@@ -96,4 +111,5 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_27_074118) do
   add_foreign_key "matches", "users", column: "player_1_id", on_delete: :nullify
   add_foreign_key "matches", "users", column: "player_2_id", on_delete: :nullify
   add_foreign_key "rooms", "users", column: "owner_id"
+  add_foreign_key "turns", "matches"
 end
