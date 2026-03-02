@@ -1,21 +1,28 @@
+<% 
+  # 進行中の試合を取得
+  ongoing_match = @room.matches.find_by(status: :ongoing)
+  # 試合が存在し、かつplayer_2が既に参加していれば「対戦中」と判定
+  is_playing = ongoing_match.present? && ongoing_match.player_2_id.present? 
+%>
+
 <div data-controller="room" data-room-token-value="<%= @room.token %>">
 
-  <%# 待機画面 %>
-  <div data-room-target="waiting">
+  <%# 待機画面（対戦開始前は表示して、再接続時は非表示） %>
+  <div data-room-target="waiting" class="<%= 'hidden' if is_playing %>">
     <%= render 'waiting_room' %>
   </div>
 
-  <%# 対戦開始演出画面 %>
+  <%# 対戦開始演出画面（初期は常に非表示） %>
   <div data-room-target="matchStartEffect" class="hidden">
     <%= render 'match_start_effect' %>
   </div>
 
-  <%# 対戦画面 %>
-  <div data-room-target="battleBoard" class="hidden">
+  <%# 対戦画面（初期は非表示で、再接続時は最初から表示する） %>
+  <div data-room-target="battleBoard" class="<%= 'hidden' unless is_playing %>">
     <%= render 'battle_board' %>
   </div>
 
-  <%# 手の選択結果演出画面 %>
+  <%# 手の選択結果演出画面（初期は常に非表示） %>
   <div data-room-target="turnResultEffect" class="hidden">
     <%= render 'turn_result_effect' %>
   </div>
