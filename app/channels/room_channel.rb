@@ -45,6 +45,9 @@ class RoomChannel < ApplicationCable::Channel
 
     return unless current_turn
 
+    # サーバー側バリデーション
+    return unless valid_action?(current_user, selected_action, current_turn.turn_number)
+
     if current_user.id == @match.player_1_id
       current_turn.update!(p1_action: selected_action)
       RoomChannel.broadcast_to(@room, { type: "player_ready", player: "p1" })
@@ -59,6 +62,43 @@ class RoomChannel < ApplicationCable::Channel
   end
 
   private
+
+  def valid_action?(user, action, current_turn_number)
+    is_p1 = (user.id == @match.player_1_id)
+
+    # 判定に必要なステータスを取得
+    my_energy       = is_p1 ? @match.p1_energy : @match.p2_energy
+    opponent_energy = is_p1 ? @match.p2_energy : @match.p1_energy
+    my_last_guard   = is_p1 ? @match.p1_last_guarded_turn : @match.p2_last_guarded_turn
+
+    case action
+    when "attack"
+      # ルール：自分のエネルギーが0の時は攻撃できない
+      my_energy > 0
+
+    when "guard"
+      # ルール：相手のエネルギーが0の時はガードできない
+      return false if opponent_energy <= 0
+
+      # ルール：設定したターン数を経過すると再びガードできる（クールダウン判定）
+      if my_last_guard.present?
+        # 例: turn 1でガードし、cooldownが 1 の場合
+        # turn 2 の時: (2 - 1) = 1。1 > 1 は false (まだガード不可)
+        # turn 3 の時: (3 - 1) = 2。2 > 1 は true (ガード可能)
+        (current_turn_number - my_last_guard) > @room.guard_cooldown_turns
+      else
+        true # まだ一度もガードしていない場合はOK
+      end
+
+    when "charge"
+      # ルール：チャージはいつでも選択可能（上限の5以上にならない制御は resolve_turn で実施済み）
+      true
+
+    else
+      # 予期せぬ文字列（"hoge"など）が送られてきた場合は弾く
+      false
+    end
+  end
 
   def resolve_turn(turn)
     # 現在のステータスを取得
