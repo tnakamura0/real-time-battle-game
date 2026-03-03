@@ -64,7 +64,7 @@ class RoomChannel < ApplicationCable::Channel
     # 現在のステータスを取得
     p1_action = turn.p1_action
     p2_action = turn.p2_action
-    
+
     p1_hp = @match.p1_hp
     p2_hp = @match.p2_hp
     p1_energy = @match.p1_energy
@@ -138,7 +138,7 @@ class RoomChannel < ApplicationCable::Channel
   # エネルギー計算用のヘルパーメソッド
   def calculate_energy(action, current_energy)
     if action == "charge"
-      [current_energy + 1, 5].min # 最大値5を保証
+      [ current_energy + 1, 5 ].min # 最大値5を保証
     elsif action == "attack"
       current_energy - 1
     else
