@@ -37,4 +37,112 @@ class RoomChannel < ApplicationCable::Channel
   def unsubscribed
     # Any cleanup needed when channel is unsubscribed
   end
+
+  def play(data)
+    selected_action = data["action"]
+
+    current_turn = @match.turns.find_by(status: :waiting)
+
+    return unless current_turn
+
+    if current_user.id == @match.player_1_id
+      current_turn.update!(p1_action: selected_action)
+      RoomChannel.broadcast_to(@room, { type: "player_ready", player: "p1" })
+    elsif current_user.id == @match.player_2_id
+      current_turn.update!(p2_action: selected_action)
+      RoomChannel.broadcast_to(@room, { type: "player_ready", player: "p2" })
+    end
+
+    if current_turn.p1_action.present? && current_turn.p2_action.present?
+      resolve_turn(current_turn)
+    end
+  end
+
+  private
+
+  def resolve_turn(turn)
+    # 現在のステータスを取得
+    p1_action = turn.p1_action
+    p2_action = turn.p2_action
+    
+    p1_hp = @match.p1_hp
+    p2_hp = @match.p2_hp
+    p1_energy = @match.p1_energy
+    p2_energy = @match.p2_energy
+
+    # エネルギーの計算
+    new_p1_energy = calculate_energy(p1_action, p1_energy)
+    new_p2_energy = calculate_energy(p2_action, p2_energy)
+
+    # ダメージの計算
+    # ルール上、ダメージが発生するのは「自分が攻撃し、かつ相手がチャージの時」のみ
+    p1_damage = (p2_action == "attack" && p1_action == "charge") ? 1 : 0
+    p2_damage = (p1_action == "attack" && p2_action == "charge") ? 1 : 0
+
+    new_p1_hp = p1_hp - p1_damage
+    new_p2_hp = p2_hp - p2_damage
+
+    # ガード使用履歴の更新
+    new_p1_last_guard = p1_action == "guard" ? turn.turn_number : @match.p1_last_guarded_turn
+    new_p2_last_guard = p2_action == "guard" ? turn.turn_number : @match.p2_last_guarded_turn
+
+    # 勝敗の判定
+    match_status = :ongoing
+    if new_p1_hp <= 0
+      match_status = :player_2_won
+    elsif new_p2_hp <= 0
+      match_status = :player_1_won
+    end
+
+    # データベースの更新
+    # トランザクションで確実に両方保存する
+    ActiveRecord::Base.transaction do
+      turn.update!(
+        status: :finished,
+        p1_hp_after: new_p1_hp,
+        p2_hp_after: new_p2_hp,
+        p1_energy_after: new_p1_energy,
+        p2_energy_after: new_p2_energy
+      )
+
+      @match.update!(
+        p1_hp: new_p1_hp,
+        p2_hp: new_p2_hp,
+        p1_energy: new_p1_energy,
+        p2_energy: new_p2_energy,
+        p1_last_guarded_turn: new_p1_last_guard,
+        p2_last_guarded_turn: new_p2_last_guard,
+        status: match_status
+      )
+
+      # 試合が続く場合は、次のターンを作成する
+      if match_status == :ongoing
+        @match.turns.create!(turn_number: turn.turn_number + 1)
+      end
+    end
+
+    # フロントエンドへ結果をブロードキャスト
+    RoomChannel.broadcast_to(@room, {
+      type: "turn_resolved",
+      turn_number: turn.turn_number,
+      p1_action: p1_action,
+      p2_action: p2_action,
+      p1_hp: new_p1_hp,
+      p2_hp: new_p2_hp,
+      p1_energy: new_p1_energy,
+      p2_energy: new_p2_energy,
+      match_status: match_status
+    })
+  end
+
+  # エネルギー計算用のヘルパーメソッド
+  def calculate_energy(action, current_energy)
+    if action == "charge"
+      [current_energy + 1, 5].min # 最大値5を保証
+    elsif action == "attack"
+      current_energy - 1
+    else
+      current_energy # guardの場合は増減なし
+    end
+  end
 end

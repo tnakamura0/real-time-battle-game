@@ -42,4 +42,8 @@ export default class extends Controller {
       this.battleBoardTarget.classList.remove("hidden");
     }, 3000)
   }
+
+  pickHand(event) {
+    this.subscription.perform("play", { action: event.params.hand } )
+  }
 }
