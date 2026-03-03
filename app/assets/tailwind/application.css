@@ -33,6 +33,10 @@
 }
 
 @layer components {
+  .page-container {
+    @apply bg-surface rounded-xl md:w-124 p-8 md:p-12 md:max-w-2xl md:mx-auto;
+  }
+
   /* フォーム関係 */
   /* Google公式ボタンの最大幅である400pxになるようにコンテンツ幅を調整 */
   .form-container {

@@ -1,1 +1,35 @@
-<h1>対戦画面</h1>
+<div class="page-container">
+  <h1 class="page-title">対戦画面</h1>
+  <h2>
+    <%# ターン数をここに表示する %>
+    ⚪︎ターン
+  </h2>
+
+  <div class="mt-8 h-24 border">
+    対戦相手の情報を表示する領域
+  </div>
+
+  <div class="mt-8 h-40 border">
+    「手を選んでください」と表示する。
+    制限時間が近づいてくるとカウントダウンを表示する。
+  </div>
+
+  <div>
+    <div class="mt-8 h-24 border">
+      ログインしているユーザーの情報を表示する領域
+    </div>
+
+    <%# 手の選択領域 %>
+    <div class="mt-4 mx-auto grid grid-cols-3 gap-3">
+      <button data-action="room#pickHand" data-room-hand-param="charge" class="flex justify-center items-center h-28 text-game-text-primary border-2 rounded bg-base hover:opacity-70">
+        チャージ
+      </button>
+      <button data-action="room#pickHand" data-room-hand-param="attack" class="flex justify-center items-center h-28 text-game-text-primary border-2 rounded bg-base hover:opacity-70">
+        攻撃
+      </button>
+      <button data-action="room#pickHand" data-room-hand-param="guard" class="flex justify-center items-center h-28 text-game-text-primary border-2 rounded bg-base hover:opacity-70">
+        ガード
+      </button>
+    </div>
+  </div>
+</div>
