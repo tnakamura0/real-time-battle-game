@@ -5,8 +5,13 @@
     ⚪︎ターン
   </h2>
 
+  <%# 対戦相手の情報を表示する領域 %>
   <div class="mt-8 h-24 border">
-    対戦相手の情報を表示する領域
+    <p class="text-sm">対戦相手</p>
+    <%# 相手のステータス表示用ターゲット %>
+    <p data-room-target="opponentStatus" class="font-bold text-xl text-gray-500 mt-2">
+      考え中...
+    </p>
   </div>
 
   <div class="mt-8 h-40 border">
@@ -15,8 +20,13 @@
   </div>
 
   <div>
+    <%# ログインしているユーザーの情報を表示する領域 %>
     <div class="mt-8 h-24 border">
-      ログインしているユーザーの情報を表示する領域
+      <p class="text-sm">自分</p>
+      <%# 自分のステータス表示用ターゲット %>
+      <p data-room-target="myStatus" class="font-bold text-xl text-gray-500 mt-2">
+        考え中...
+      </p>
     </div>
 
     <%# 手の選択領域 %>

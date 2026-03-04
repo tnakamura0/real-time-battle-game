@@ -3,7 +3,12 @@ import consumer from "../channels/consumer"
 
 // Connects to data-controller="room"
 export default class extends Controller {
-  static targets = ["waiting", "matchStartEffect", "battleBoard", "turnResultEffect", "chargeButton", "attackButton", "guardButton"]
+  static targets = [
+    "waiting", "matchStartEffect", "battleBoard", "turnResultEffect",
+    "chargeButton", "attackButton", "guardButton",
+    "myStatus", "opponentStatus"
+  ];
+
   static values = {
     token: String,
     isP1: Boolean,
@@ -30,10 +35,23 @@ export default class extends Controller {
             console.log(`対戦開始！（Match ID: ${data.match_id}）`);
             this.showMatchStartEffect();
             this.updateButtonStates(0, 0);
+            this.resetPlayerStatuses();
           }
 
           if (data.type === "player_ready") {
-            // 「考え中」と「選択完了」を表示を切り替える処理
+            const isReadyPlayerMe = (this.isP1Value && data.player === "p1") || (!this.isP1Value && data.player === "p2");
+
+            console.log(`isReadyPlayerMe: ${isReadyPlayerMe}`);
+
+            if (isReadyPlayerMe) {
+              // 自分が選び終わった場合
+              this.myStatusTarget.textContent = "選択完了！";
+              this.myStatusTarget.classList.replace("text-gray-500", "text-blue-500");
+            } else {
+              // 相手が選び終わった場合
+              this.opponentStatusTarget.textContent = "選択完了！";
+              this.opponentStatusTarget.classList.replace("text-gray-500", "text-red-500");
+            }
           }
 
           if (data.type == "turn_resolved") {
@@ -42,9 +60,9 @@ export default class extends Controller {
             const myEnergy = this.isP1Value ? data.p1_energy : data.p2_energy;
             const opponentEnergy = this.isP1Value ? data.p2_energy : data.p1_energy;
 
-            // ボタンの状態を最新にする
             // 結果演出画面の表示などを行った後に実行する
             this.updateButtonStates(myEnergy, opponentEnergy);
+            this.resetPlayerStatuses();
           }
         }
       }
@@ -70,12 +88,13 @@ export default class extends Controller {
 
   pickHand(event) {
     const selectedHand = event.params.hand;
+    console.log(`selectedHand: ${selectedHand}`)
 
     if (selectedHand === "guard") {
       this.myLastGuardTurn = this.currentTurn;
     }
 
-    this.subscription.perform("play", { action: selectedHand } );
+    this.subscription.perform("play", { selectedHand: selectedHand } );
 
     this.disableAllButtons();
   }
@@ -101,5 +120,16 @@ export default class extends Controller {
     this.chargeButtonTarget.disabled = true;
     this.attackButtonTarget.disabled = true;
     this.guardButtonTarget.disabled = true;
+  }
+
+  // ターンの初めにステータス表示を「考え中...」に戻すメソッド
+  resetPlayerStatuses() {
+    this.myStatusTarget.textContent = "考え中...";
+    this.myStatusTarget.classList.add("text-gray-500");
+    this.myStatusTarget.classList.remove("text-blue-500");
+
+    this.opponentStatusTarget.textContent = "考え中...";
+    this.opponentStatusTarget.classList.add("text-gray-500");
+    this.opponentStatusTarget.classList.remove("text-red-500");
   }
 }
