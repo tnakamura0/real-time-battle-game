@@ -21,13 +21,28 @@
 
     <%# 手の選択領域 %>
     <div class="mt-4 mx-auto grid grid-cols-3 gap-3">
-      <button data-action="room#pickHand" data-room-hand-param="charge" class="flex justify-center items-center h-28 text-game-text-primary border-2 rounded bg-base hover:opacity-70">
+      <button
+        data-action="room#pickHand"
+        data-room-hand-param="charge"
+        data-room-target="chargeButton"
+        class="flex justify-center items-center h-28 text-game-text-primary border-2 rounded bg-base hover:opacity-70 disabled:opacity-30 disabled:cursor-not-allowed"
+        >
         チャージ
       </button>
-      <button data-action="room#pickHand" data-room-hand-param="attack" class="flex justify-center items-center h-28 text-game-text-primary border-2 rounded bg-base hover:opacity-70">
+      <button
+        data-action="room#pickHand"
+        data-room-hand-param="attack"
+        data-room-target="attackButton"
+        class="flex justify-center items-center h-28 text-game-text-primary border-2 rounded bg-base hover:opacity-70 disabled:opacity-30 disabled:cursor-not-allowed"
+        >
         攻撃
       </button>
-      <button data-action="room#pickHand" data-room-hand-param="guard" class="flex justify-center items-center h-28 text-game-text-primary border-2 rounded bg-base hover:opacity-70">
+      <button
+        data-action="room#pickHand"
+        data-room-hand-param="guard"
+        data-room-target="guardButton"
+        class="flex justify-center items-center h-28 text-game-text-primary border-2 rounded bg-base hover:opacity-70 disabled:opacity-30 disabled:cursor-not-allowed"
+        >
         ガード
       </button>
     </div>
