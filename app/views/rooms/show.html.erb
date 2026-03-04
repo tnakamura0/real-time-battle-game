@@ -3,9 +3,16 @@
   ongoing_match = @room.matches.find_by(status: :ongoing)
   # 試合が存在し、かつplayer_2が既に参加していれば「対戦中」と判定
   is_playing = ongoing_match.present? && ongoing_match.player_2_id.present? 
+  # 現在のユーザーがホストかどうかを判定
+  is_p1 = (current_user.id == @room.owner_id)
 %>
 
-<div data-controller="room" data-room-token-value="<%= @room.token %>">
+<div 
+  data-controller="room"
+  data-room-token-value="<%= @room.token %>"
+  data-room-is-p1-value="<%= is_p1 %>"
+  data-guard-cooldown-value="<%= @room.guard_cooldown_turns %>"
+  >
 
   <%# 待機画面（対戦開始前は表示して、再接続時は非表示） %>
   <div data-room-target="waiting" class="<%= 'hidden' if is_playing %>">
