@@ -39,7 +39,7 @@ class RoomChannel < ApplicationCable::Channel
   end
 
   def play(data)
-    selected_action = data["action"]
+    selected_action = data["selectedHand"]
 
     current_turn = @match.turns.find_by(status: :waiting)
 
