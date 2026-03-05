@@ -164,6 +164,7 @@ class RoomChannel < ApplicationCable::Channel
     # フロントエンドへ結果をブロードキャスト
     RoomChannel.broadcast_to(@room, {
       type: "turn_resolved",
+      match_id: @match.id,
       turn_number: turn.turn_number,
       p1_action: p1_action,
       p2_action: p2_action,
