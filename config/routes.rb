@@ -22,4 +22,10 @@ Rails.application.routes.draw do
       post :join
     end
   end
+
+  resources :matches, only: %i[index show] do
+    member do
+      get :result
+    end
+  end
 end

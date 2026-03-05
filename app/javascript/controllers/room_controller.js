@@ -6,7 +6,8 @@ export default class extends Controller {
   static targets = [
     "waiting", "matchStartEffect", "battleBoard", "turnResultEffect",
     "chargeButton", "attackButton", "guardButton",
-    "myStatus", "opponentStatus"
+    "myStatus", "opponentStatus",
+    "myActionDisplay", "opponentActionDisplay", "resultMessageDisplay"
   ];
 
   static values = {
@@ -54,15 +55,26 @@ export default class extends Controller {
             }
           }
 
-          if (data.type == "turn_resolved") {
+          if (data.type === "turn_resolved") {
             this.currentTurn = data.turn_number + 1;
+            
+            // 自分がP1かP2かによって、データを振り分ける
+            const isP1 = this.isP1Value;
+            const myAction = isP1 ? data.p1_action : data.p2_action;
+            const opponentAction = isP1 ? data.p2_action : data.p1_action;
+            const myEnergy = isP1 ? data.p1_energy : data.p2_energy;
+            const opponentEnergy = isP1 ? data.p2_energy : data.p1_energy;
 
-            const myEnergy = this.isP1Value ? data.p1_energy : data.p2_energy;
-            const opponentEnergy = this.isP1Value ? data.p2_energy : data.p1_energy;
+            // アクション名を日本語に変換
+            const actionNames = { charge: "チャージ", attack: "攻撃", guard: "ガード" };
+            this.myActionDisplayTarget.textContent = actionNames[myAction];
+            this.opponentActionDisplayTarget.textContent = actionNames[opponentAction];
 
-            // 結果演出画面の表示などを行った後に実行する
-            this.updateButtonStates(myEnergy, opponentEnergy);
-            this.resetPlayerStatuses();
+            // 組み合わせに基づく結果メッセージを生成して表示
+            this.resultMessageDisplayTarget.textContent = this.generateResultMessage(myAction, opponentAction);
+
+            // 演出画面へ切り替え（3秒後に次のターンまたは終了画面へ）
+            this.showTurnResultEffect(data.match_status, data.match_id, myEnergy, opponentEnergy);
           }
         }
       }
@@ -131,5 +143,43 @@ export default class extends Controller {
     this.opponentStatusTarget.textContent = "考え中...";
     this.opponentStatusTarget.classList.add("text-gray-500");
     this.opponentStatusTarget.classList.remove("text-red-500");
+  }
+
+  generateResultMessage(my, opponent) {
+    if (my === "attack" && opponent === "charge") return "攻撃成功！相手に1ダメージ！";
+    if (my === "attack" && opponent === "attack") return "相打ち！ダメージなし";
+    if (my === "attack" && opponent === "guard")  return "ガードされた！ダメージなし";
+    
+    if (my === "charge" && opponent === "attack") return "攻撃を受けた！1ダメージ...";
+    if (my === "charge" && opponent === "charge") return "お互いにエネルギーを溜めた";
+    if (my === "charge" && opponent === "guard")  return "相手は警戒している...";
+    
+    if (my === "guard"  && opponent === "attack") return "ガード成功！攻撃を防いだ！";
+    if (my === "guard"  && opponent === "charge") return "相手はエネルギーを溜めた";
+    if (my === "guard"  && opponent === "guard")  return "お互いに様子を見ている";
+    
+    return "";
+  }
+
+  showTurnResultEffect(matchStatus, matchId, myEnergy, opponentEnergy) {
+    // 対戦画面を隠して、結果演出画面を表示
+    this.battleBoardTarget.classList.add("hidden");
+    this.turnResultEffectTarget.classList.remove("hidden");
+
+    setTimeout(() => {
+      if (matchStatus === "ongoing") {
+        // 試合が続く場合：演出画面を隠し、対戦画面に戻す
+        this.turnResultEffectTarget.classList.add("hidden");
+        this.battleBoardTarget.classList.remove("hidden");
+        
+        // UIのリセットとボタンの再評価
+        this.resetPlayerStatuses();
+        this.updateButtonStates(myEnergy, opponentEnergy);
+      } else {
+        // 試合終了の場合：対戦結果画面にリダイレクトする
+        // ※ matches#show など、結果画面へのルーティングに合わせてURLを調整してください
+        window.location.href = `/matches/${matchId}/result`;
+      }
+    }, 3000); // 3秒間結果を表示
   }
 }

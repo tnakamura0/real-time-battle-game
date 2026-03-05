@@ -1,0 +1,13 @@
+<%
+  is_p1 = (current_user.id == @match.player_1_id)
+  is_p2 = (current_user.id == @match.player_2_id)
+%>
+
+<h1>結果画面</h1>
+<div>
+  <% if (is_p1 && @match.status == "player_1_won") || (is_p2 && @match.status == "player_2_won") %>
+    <p>勝利！</p>
+  <% elsif (is_p1 && @match.status == "player_2_won") || (is_p2 && @match.status == "player_1_won") %>
+    <p>敗北...</p>
+  <% end %>
+</div>
