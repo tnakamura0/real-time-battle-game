@@ -37,6 +37,14 @@
     @apply bg-surface rounded-xl md:w-124 p-8 md:p-12 md:max-w-2xl md:mx-auto;
   }
 
+  .page-title {
+    @apply text-3xl md:text-4xl text-center text-game-text-primary font-bold tracking-widest mb-4;
+  }
+
+  .title-description {
+    @apply md:text-xl text-center text-game-text-secondary mb-4
+  }
+
   /* フォーム関係 */
   /* Google公式ボタンの最大幅である400pxになるようにコンテンツ幅を調整 */
   .form-container {
@@ -63,10 +71,7 @@
     @apply mt-1 text-xs text-label-muted;
   }
 
-  .page-title {
-    @apply text-3xl md:text-4xl text-center text-game-text-primary font-bold tracking-widest mb-4;
-  }
-  .page-title-description {
-    @apply md:text-xl text-center text-game-text-secondary mb-4
+  .form-title {
+    @apply text-2xl md:text-3xl text-center text-game-text-primary font-bold tracking-widest mb-4;
   }
 }
