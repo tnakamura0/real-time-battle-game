@@ -7,7 +7,8 @@ export default class extends Controller {
     "waiting", "matchStartEffect", "battleBoard", "turnResultEffect",
     "chargeButton", "attackButton", "guardButton",
     "myStatus", "opponentStatus",
-    "myActionDisplay", "opponentActionDisplay", "resultMessageDisplay"
+    "myActionDisplay", "opponentActionDisplay", "resultMessageDisplay",
+    "p1Name", "p1Image", "p2Name", "p2Image"
   ];
 
   static values = {
@@ -34,6 +35,15 @@ export default class extends Controller {
         received: (data) => {
           if (data.type === "match_started") {
             console.log(`対戦開始！（Match ID: ${data.match_id}）`);
+
+            this.p1NameTarget.textContent = data.p1_name;
+            this.p1ImageTarget.src = data.p1_image_url;
+            this.p1ImageTarget.classList.remove("hidden");
+            
+            this.p2NameTarget.textContent = data.p2_name;
+            this.p2ImageTarget.src = data.p2_image_url;
+            this.p2ImageTarget.classList.remove("hidden");
+
             this.showMatchStartEffect();
             this.updateButtonStates(0, 0);
             this.resetPlayerStatuses();

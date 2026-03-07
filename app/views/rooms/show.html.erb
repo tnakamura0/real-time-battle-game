@@ -5,6 +5,12 @@
   is_playing = ongoing_match.present? && ongoing_match.player_2_id.present? 
   # 現在のユーザーがホストかどうかを判定
   is_p1 = (current_user.id == @room.owner_id)
+
+  p1_order = is_p1 ? "order-3" : "order-1"
+  p2_order = is_p1 ? "order-1" : "order-3"
+
+  p1_color = is_p1 ? "primary" : "accent"
+  p2_color = is_p1 ? "accent" : "primary"
 %>
 
 <div 
@@ -21,7 +27,7 @@
 
   <%# 対戦開始演出画面（初期は常に非表示） %>
   <div data-room-target="matchStartEffect" class="hidden">
-    <%= render 'match_start_effect' %>
+    <%= render 'match_start_effect', p1_order: p1_order, p2_order: p2_order, p1_color: p1_color, p2_color: p2_color %>
   </div>
 
   <%# 対戦画面（初期は非表示で、再接続時は最初から表示する） %>
