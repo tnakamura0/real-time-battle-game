@@ -34,11 +34,11 @@
 
 @layer components {
   .page-container {
-    @apply bg-surface rounded-xl md:w-124 p-8 md:p-12 md:max-w-2xl md:mx-auto;
+    @apply bg-surface rounded-xl md:w-124 p-4 md:p-8 md:max-w-2xl md:mx-auto;
   }
 
   .page-title {
-    @apply text-3xl md:text-4xl text-center text-game-text-primary font-bold tracking-widest mb-4;
+    @apply text-xl md:text-2xl text-center text-game-text-primary font-bold tracking-widest mb-4;
   }
 
   .title-description {

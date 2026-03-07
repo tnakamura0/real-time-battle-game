@@ -1,4 +1,6 @@
 class RoomChannel < ApplicationCable::Channel
+  include Rails.application.routes.url_helpers
+
   def subscribed
     @room = Room.find_by(token: params[:token])
 
@@ -22,7 +24,14 @@ class RoomChannel < ApplicationCable::Channel
 
       # 2人揃い次第、最初のターンを作成して対戦開始の合図をフロントエンドに送信
       @match.turns.create!
-      RoomChannel.broadcast_to(@room, { type: "match_started", match_id: @match.id })
+      RoomChannel.broadcast_to(@room, {
+        type: "match_started",
+        match_id: @match.id,
+        p1_name: @match.player_1.name,
+        p1_image_url: avatar_url(@match.player_1),
+        p2_name: @match.player_2.name,
+        p2_image_url: avatar_url(@match.player_2)
+      })
 
     elsif current_user.id == @match.player_2_id
       # Player2の再接続
@@ -62,6 +71,15 @@ class RoomChannel < ApplicationCable::Channel
   end
 
   private
+
+  def avatar_url(user)
+    if user.image&.attached?
+      rails_blob_path(user.image, only_path: true)
+    else
+      # 画像が設定されていない場合のデフォルト画像パス
+      ActionController::Base.helpers.asset_path("default_icon.png")
+    end
+  end
 
   def valid_action?(user, action, current_turn_number)
     is_p1 = (user.id == @match.player_1_id)
