@@ -4,9 +4,9 @@
     <div class="text-center w-full md:w-1/3 flex flex-col items-center <%= p1_order %>">
       <%= image_tag "default_icon.png", 
             data: { room_target: "p1Image" }, 
-            class: "w-24 h-24 md:w-32 md:h-32 rounded-full object-cover border-4 border-#{p1_color} shadow-lg mb-2 md:mb-4 hidden" %>
+            class: "w-24 h-24 md:w-32 md:h-32 rounded-full object-cover border-4 #{p1_border_class} shadow-lg mb-2 md:mb-4 hidden" %>
       
-      <p data-room-target="p1Name" class="text-<%= p1_color %> text-xl md:text-2xl font-bold"></p>
+      <p data-room-target="p1Name" class="<%= p1_text_class %> text-xl md:text-2xl font-bold"></p>
     </div>
 
     <p class="text-game-text-primary text-3xl md:text-4xl text-center my-4 order-2">VS</p>
@@ -15,9 +15,9 @@
     <div class="text-center w-full md:w-1/3 flex flex-col items-center <%= p2_order %>">
       <%= image_tag "default_icon.png", 
             data: { room_target: "p2Image" }, 
-            class: "w-24 h-24 md:w-32 md:h-32 rounded-full object-cover border-4 border-#{p2_color} shadow-lg mb-2 md:mb-4 hidden" %>
+            class: "w-24 h-24 md:w-32 md:h-32 rounded-full object-cover border-4 #{p2_border_class} shadow-lg mb-2 md:mb-4 hidden" %>
             
-      <p data-room-target="p2Name" class="text-<%= p2_color %> text-xl md:text-2xl font-bold"></p>
+      <p data-room-target="p2Name" class="<%= p2_text_class %> text-xl md:text-2xl font-bold"></p>
     </div>
   </div>
 </div>
